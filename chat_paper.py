@@ -301,7 +301,7 @@ class Reader:
         self.config = configparser.ConfigParser()
         # 读取配置文件
         self.config.read('apikey.ini')
-        OPENAI_KEY = os.environ.get("OPENAI_KEY", "")
+        OPENAI_KEY = os.environ.get("OPENAI_KEY", "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")
         # 获取某个键对应的值
         self.chat_api_list = self.config.get('OpenAI', 'OPENAI_API_KEYS')[1:-1].replace('\'', '').split(',')
         self.chat_api_list.append(OPENAI_KEY)
@@ -763,39 +763,39 @@ def chat_paper_main(args):
     else:
         sort = arxiv.SortCriterion.Relevance
 
-    if args.pdf_path:
-        reader1 = Reader(key_word=args.key_word,
+    if args.pdf_path:"D:\AI\chatpaper\ChatPaper\pdf_files\ecmo"
+    reader1 = Reader(key_word=args.key_word,
                          query=args.query,
                          filter_keys=args.filter_keys,
                          sort=sort,
                          args=args
                          )
-        reader1.show_info()
+    reader1.show_info()
         # 开始判断是路径还是文件：
-        paper_list = []
-        if args.pdf_path.endswith(".pdf"):
+    paper_list = []
+    if args.pdf_path.endswith(".pdf"):
             paper_list.append(Paper(path=args.pdf_path))
-        else:
+    else:
             for root, dirs, files in os.walk(args.pdf_path):
                 print("root:", root, "dirs:", dirs, 'files:', files)  # 当前目录路径
                 for filename in files:
                     # 如果找到PDF文件，则将其复制到目标文件夹中
                     if filename.endswith(".pdf"):
                         paper_list.append(Paper(path=os.path.join(root, filename)))
-        print("------------------paper_num: {}------------------".format(len(paper_list)))
-        [print(paper_index, paper_name.path.split('\\')[-1]) for paper_index, paper_name in enumerate(paper_list)]
-        reader1.summary_with_chat(paper_list=paper_list)
-    else:
-        reader1 = Reader(key_word=args.key_word,
+    print("------------------paper_num: {}------------------".format(len(paper_list)))
+    [print(paper_index, paper_name.path.split('\\')[-1]) for paper_index, paper_name in enumerate(paper_list)]
+    reader1.summary_with_chat(paper_list=paper_list)
+    
+    reader1 = Reader(key_word=args.key_word,
                          query=args.query,
                          filter_keys=args.filter_keys,
                          sort=sort,
                          args=args
                          )
-        reader1.show_info()
-        filter_results = reader1.filter_arxiv(max_results=args.max_results)
-        paper_list = reader1.download_pdf(filter_results)
-        reader1.summary_with_chat(paper_list=paper_list)
+    reader1.show_info()
+    filter_results = reader1.filter_arxiv(max_results=args.max_results)
+    paper_list = reader1.download_pdf(filter_results)
+    reader1.summary_with_chat(paper_list=paper_list)
 
 
 if __name__ == '__main__':

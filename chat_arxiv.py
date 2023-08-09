@@ -41,7 +41,7 @@ class Paper:
     def __init__(self, path, title='', url='', abs='', authers=[]):
         # 初始化函数，根据pdf路径初始化Paper对象                
         self.url = url  # 文章链接
-        self.path = path  # pdf路径
+        self.path = path("D:\AI\chatpaper\ChatPaper\pdf_files\ecmo")  # pdf路径
         self.section_names = []  # 段落标题
         self.section_texts = {}  # 段落内容
         self.abs = abs
@@ -55,7 +55,7 @@ class Paper:
         self.first_image = ''
 
     def parse_pdf(self):
-        self.pdf = fitz.open(self.path)  # pdf文档
+        self.pdf = fitz.open("D:\AI\chatpaper\ChatPaper\pdf_files\ecmo\Inhaled Treprostinil Drug Delivery During Mechanical Ventilation and Spontaneous Breathing Using Two Different Nebulizers.pdf")  # pdf文档
         self.text_list = [page.get_text() for page in self.pdf]
         self.all_text = ' '.join(self.text_list)
         self.section_page_dict = self._get_all_page_index()  # 段落与页码的对应字典
@@ -339,7 +339,7 @@ class Reader:
 
     # 定义一个函数，根据关键词和页码生成arxiv搜索链接
     def get_url(self, keyword, page):
-        base_url = "https://arxiv.org/search/?"
+        base_url = ""
         params = {
             "query": keyword,
             "searchtype": "all",  # 搜索所有字段
@@ -735,7 +735,7 @@ def chat_arxiv_main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--query", type=str, default='traffic flow prediction', help="the query string, ti: xx, au: xx, all: xx,")
-    parser.add_argument("--key_word", type=str, default='GPT robot', help="the key word of user research fields")
+    parser.add_argument("--key_word", type=str, default='', help="the key word of user research fields")
     parser.add_argument("--page_num", type=int, default=2, help="the maximum number of page")
     parser.add_argument("--max_results", type=int, default=3, help="the maximum number of results")
     parser.add_argument("--days", type=int, default=10, help="the last days of arxiv papers of this query")
